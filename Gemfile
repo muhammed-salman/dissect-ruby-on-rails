@@ -52,6 +52,8 @@ end
 gem "tzinfo-data", platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 gem "friendly_id", "~> 5.1.0"
 gem "devise", "~> 4.2"
+gem "sassc", "~>2.1.0"
+gem "bootstrap", "~> 4.5.3"
 
 gem "devcampmss_view_tool", git: "https://github.com/muhammed-salman/devcampmss_view_tool"
 
