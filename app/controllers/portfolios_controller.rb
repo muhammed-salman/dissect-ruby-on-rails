@@ -1,11 +1,14 @@
 class PortfoliosController < ApplicationController
+  before_action :set_portfolio_item, only: [:edit, :show, :update, :destroy]
   layout "portfolio"
   access all: [:show, :index, :angular], user: { except: [:destroy, :new, :create, :update, :edit] }, site_admin: :all
 
   def index
     @portfolio_items = Portfolio.all
-    @angular_items = Portfolio.angular
-    @ruby_items = Portfolio.ruby_on_rails_portfolio_items
+  end
+
+  def angular
+    @angular_portfolio_items = Portfolio.angular
   end
 
   def new
@@ -26,14 +29,12 @@ class PortfoliosController < ApplicationController
   end
 
   def edit
-    @portfolio_item = Portfolio.find(params[:id])
   end
 
   def update
-    @portfolio_item = Portfolio.find(params[:id])
     respond_to do |format|
       if @portfolio_item.update(portfolio_params)
-        format.html { redirect_to portfolios_path, notice: "The record was successfully updated." }
+        format.html { redirect_to portfolios_path, notice: "The record successfully updated." }
       else
         format.html { render :edit }
       end
@@ -41,16 +42,15 @@ class PortfoliosController < ApplicationController
   end
 
   def show
-    @portfolio_item = Portfolio.find(params[:id])
   end
 
   def destroy
-    @portfolio_item = Portfolio.find(params[:id])
-
+    # Destroy/delete the record
     @portfolio_item.destroy
 
+    # Redirect
     respond_to do |format|
-      format.html { redirect_to portfolios_url, notice: "Record was successfully destroyed." }
+      format.html { redirect_to portfolios_url, notice: "Record was removed." }
     end
   end
 
@@ -61,5 +61,9 @@ class PortfoliosController < ApplicationController
                                       :subtitle,
                                       :body,
                                       technologies_attributes: [:name])
+  end
+
+  def set_portfolio_item
+    @portfolio_item = Portfolio.find(params[:id])
   end
 end
